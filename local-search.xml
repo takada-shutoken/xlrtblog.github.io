@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>Hexo静态博客搭建教程 - 本地部署 和 部署到 Cloudflare</title>
+    <link href="/2022/04/08/hexo1/"/>
+    <url>/2022/04/08/hexo1/</url>
+    
+    <content type="html"><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><blockquote><p>一个快速，简单和强大的博客框架，由Node.js构建。</p></blockquote><h2 id="搭建前准备"><a href="#搭建前准备" class="headerlink" title="搭建前准备"></a>搭建前准备</h2><ul><li><input checked="" disabled="" type="checkbox"> 一个Github账号</li><li><input checked="" disabled="" type="checkbox"> 一个Cloudflare账号</li><li><input checked="" disabled="" type="checkbox"> 一台电脑</li><li><input checked="" disabled="" type="checkbox"> 一双手</li></ul><p><em>注：本教程中所有输入的命令输入后都需要按回车</em><br><em>什么，你没有手？</em></p><h2 id="安装搭建环境"><a href="#安装搭建环境" class="headerlink" title="安装搭建环境"></a>安装搭建环境</h2><p>Hexo的搭建环境需要用到<strong>Git</strong>和<strong>Node.js</strong>，<a href="https://git-scm.com/downloads">点击这里下载Git</a>，<a href="https://nodejs.org/en/download/">点击这里下载Node.js</a>，下载后安装。</p><p><strong>注：如果你使用的操作系统是Linux或Mac OS，请自行安装Git和Node.js</strong></p><h2 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h2><p>在你要安装Hexo的文件夹中按快捷键<code>Shift+F10</code>,点击“Git Bash Here”，打开Git命令行。</p><p>然后在命令行中输入以下命令来安装Hexo。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install hexo-cli -g<br></code></pre></td></tr></table></figure><p>安装可能需要一些时间，请耐心等待。安装完成后，输入：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo init <br></code></pre></td></tr></table></figure><p>来在当前文件夹中初始化Hexo。出现<code>INFO  Start blogging with Hexo!</code>信息后，代表初始化完成。</p><p>然后，输入以下命令，生成静态文件。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo g<br></code></pre></td></tr></table></figure><p>出现<code>INFO  ** files generated in *.* s</code>时，代表成功生成。</p><h2 id="配置Git"><a href="#配置Git" class="headerlink" title="配置Git"></a>配置Git</h2><p>登录Github，创建仓库，如下图配置。</p><p><img src="https://cdn.jsdelivr.net/gh/takada-shutoken/jsdelivr@main/1649380564000.png" alt="创建仓库"></p><p>回到Git命令行，输入以下命令。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> ~/.ssh &amp;&amp; <span class="hljs-built_in">cd</span> ~/.ssh<br></code></pre></td></tr></table></figure><p>接下来输入</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh-keygen -t rsa -C <span class="hljs-string">&quot;你注册GitHub用的邮箱&quot;</span><br></code></pre></td></tr></table></figure><p>然后依次按下三次回车。</p><p>之后输入</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">mkdir</span> ssh &amp;&amp; <span class="hljs-built_in">cp</span> ~/.ssh/id_rsa.pub ssh<br></code></pre></td></tr></table></figure><p>打开你存放博客的文件夹，里面有个ssh文件夹，进入那个文件夹，用记事本打开<strong>id_rsa.pub</strong>，把里面的内容全部复制。</p><p><a href="https://github.com/settings/keys">点击这里</a>，然后点击<code>New SSH Key</code>，Title随便填，Key请粘贴刚刚复制的内容。填写完毕后点击<code>Add SSH key</code>。</p><p>回到终端，输入以下命令。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> .. &amp;&amp; ssh -T git@github.com<br></code></pre></td></tr></table></figure><p>如果显示<code>Hi xxx! You&#39;ve successfully authenticated</code>说明配置成功了。</p><p>用记事本打开博客根目录下的<code>_config.yml</code>，拉到最下面，删除以下内容。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># Deployment</span><br><span class="hljs-comment">## Docs: https://hexo.io/docs/one-command-deployment</span><br>deploy:<br>  <span class="hljs-built_in">type</span>: <span class="hljs-string">&#x27;&#x27;</span><br></code></pre></td></tr></table></figure><p>加入以下内容</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">deploy:<br>  <span class="hljs-built_in">type</span>: git<br>  repo: git@github.com:你的GitHub用户名/仓库名.github.io.git <br>  branch: master <span class="hljs-comment">#默认是master，如果不行可以试试main</span><br></code></pre></td></tr></table></figure><p>保存之后，回到终端执行命令<code>npm install hexo-deployer-git --save</code>，等待一会安装完成。</p><h2 id="推送"><a href="#推送" class="headerlink" title="推送"></a>推送</h2><p>在终端输入<code>hexo d</code>，大功告成！</p><h2 id="部署到-Cloudflare-Pages"><a href="#部署到-Cloudflare-Pages" class="headerlink" title="部署到 Cloudflare Pages"></a>部署到 Cloudflare Pages</h2><p>登录Cloudflare，点击主页旁边的“Pages”。</p><p>按照提示添加GitHub账号，选择你的仓库，点击“开始部署”。</p><p>项目名称自己填，点击“保存并部署”，等待部署完成。</p><p>完成之后，你就可以用上面的域名访问了。</p><h2 id="拓展阅读"><a href="#拓展阅读" class="headerlink" title="拓展阅读"></a>拓展阅读</h2><p><a href="https://github.com/fluid-dev/hexo-theme-fluid">Fluid - 一款 Material Design 风格的主题</a></p><blockquote><p>部分内容引用自<a href="https://xiaolan.js.org/articles/%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E4%BD%BF%E7%94%A8Github-Pages-hexo%E5%85%8D%E8%B4%B9%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2.html">https://xiaolan.js.org/articles/%E5%AE%89%E5%8D%93%E6%89%8B%E6%9C%BA%E4%BD%BF%E7%94%A8Github-Pages-hexo%E5%85%8D%E8%B4%B9%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2.html</a>，作者<del>男铜啊</del><strong>岚天啊</strong>。</p></blockquote>]]></content>
+    
+    
+    <categories>
+      
+      <category>教程</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Hexo使用Gitalk评论插件教程</title>
+    <link href="/2022/04/07/gitalk/"/>
+    <url>/2022/04/07/gitalk/</url>
+    
+    <content type="html"><![CDATA[<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><blockquote><p>Gitalk 是一个基于 GitHub Issue 和 Preact 开发的评论插件。</p></blockquote><h2 id="搭建前准备"><a href="#搭建前准备" class="headerlink" title="搭建前准备"></a>搭建前准备</h2><ul><li><input checked="" disabled="" type="checkbox"> 一个GitHub账号</li><li><input checked="" disabled="" type="checkbox"> 一个部署好的Hexo博客</li><li><input checked="" disabled="" type="checkbox"> 一双手</li></ul><p><strong>注：本篇教程使用Fluid主题配置，其他主题配置方法不尽相同</strong></p><h2 id="创建存放评论的仓库"><a href="#创建存放评论的仓库" class="headerlink" title="创建存放评论的仓库"></a>创建存放评论的仓库</h2><p>登录GitHub后点击这个<a href="https://github.com/new"><img src="https://cdn.jsdelivr.net/gh/takada-shutoken/jsdelivr@main/1649292136000.png" alt="New"></a>按钮（可以直接点击本篇教程的按钮），创建一个新的仓库。仓库名随便填，<strong>注意一定要创建公开仓库</strong>，完成后点击创建仓库。</p><h2 id="创建-GitHub-Application"><a href="#创建-GitHub-Application" class="headerlink" title="创建 GitHub Application"></a>创建 GitHub Application</h2><p><a href="https://github.com/settings/applications/new">点击这里创建 GitHub Application</a>，然后如下图填写。</p><p><img src="https://cdn.jsdelivr.net/gh/takada-shutoken/jsdelivr@main/1649293610000.png" alt="填写信息"></p><p>填写完毕后会跳转到一个页面，点击右侧的<strong>”Generate a new client secret“</strong>，输入<em>Github密码</em>后得到Client Secret。</p><p>将<strong>Client ID</strong>和<strong>Client Secret</strong>保存好，一会要用。</p><h2 id="填写-config-yml"><a href="#填写-config-yml" class="headerlink" title="填写 _config.yml"></a>填写 _config.yml</h2><p><strong>注：本篇教程使用Fluid主题配置，其他主题配置方法不尽相同</strong></p><p>打开你Hexo的<strong>配置文件或主题配置文件</strong>（我这里打开的是主题配置文件），找到Gitalk评论插件，按照下图填写配置。</p><p><img src="https://cdn.jsdelivr.net/gh/takada-shutoken/jsdelivr@main/1649295189000.png" alt="填写配置"></p><p>然后保存退出，重新推送Hexo，那么Gitalk配置就完成了。</p><h2 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h2><p>每次有新文章&#x2F;页面生成后都需要去生成的文章页初始化Issues，如下图。</p><p><img src="https://cdn.jsdelivr.net/gh/takada-shutoken/jsdelivr@main/1649295775000.png" alt="初始化"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>教程</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>XLRT的博客恢复运营了！</title>
+    <link href="/2022/04/06/start/"/>
+    <url>/2022/04/06/start/</url>
+    
+    <content type="html"><![CDATA[<p>是的，<strong>你没看错，博客恢复运营了</strong> <img src="https://cdn.jsdelivr.net/gh/2x-ercha/twikoo-magic@master/image/huaji/huaji22.jpg"></p><p>这次重新推翻整了一次<em>Hexo</em>，算是一个好的开始吧</p><p>以后也会更新博客的<del>（咕咕警告</del><img src="https://cdn.jsdelivr.net/gh/2x-ercha/twikoo-magic@master/image/bilibili2233/3.png"></p>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  
+</search>
